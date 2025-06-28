@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, RotateCcw } from "lucide-react";
 import { useChatHistory } from "../history/ChatHistoryContext";
 import type { Message } from "@/app/types/messages";
+import { useResponseLoading } from "../history/ResponseLoadingContext";
+import { generateQuestion } from "@/app/api/question/generateQuestion";
 
 const SAMPLE_QUESTIONS = [
   "What is your greatest strength and how have you applied it?",
@@ -14,6 +16,7 @@ const SAMPLE_QUESTIONS = [
 
 const FooterQuestionControls: React.FC = () => {
   const { messages, addMessage, clearHistory } = useChatHistory();
+  const { setIsResponseLoading } = useResponseLoading();
 
   const handleTryAgain = () => {
     // Walk backwards until we hit the last bot message
@@ -32,16 +35,21 @@ const FooterQuestionControls: React.FC = () => {
     newHistory.forEach((m) => addMessage(m));
   };
 
-  const handleNextQuestion = () => {
-    // pick a random question and append as a bot message
-    const text =
-      SAMPLE_QUESTIONS[Math.floor(Math.random() * SAMPLE_QUESTIONS.length)];
-    const newMsg: Message = {
-      id: Date.now().toString(),
-      type: "bot",
-      text,
-    };
-    addMessage(newMsg);
+  const handleNextQuestion = async () => {
+    setIsResponseLoading(true);
+    try {
+      const question = await generateQuestion(messages);
+      const botMsg: Message = {
+        id: Date.now().toString(),
+        type: "bot",
+        text: question,
+      };
+      addMessage(botMsg);
+    } catch (err) {
+      console.error("Failed to load first question", err);
+    } finally {
+      setIsResponseLoading(false);
+    }
   };
 
   return (

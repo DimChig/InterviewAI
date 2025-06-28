@@ -1,12 +1,11 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import ConversationHistory from "./components/ConversationHistory";
-import ConversationFooter from "./components/ConversationFooter";
-import { useChatHistory } from "./components/history/ChatHistoryContext";
+import { generateQuestion } from "../api/question/generateQuestion";
 import type { Message } from "../types/messages";
-import { ChessRating } from "../types/chess";
+import ConversationFooter from "./components/ConversationFooter";
+import ConversationHistory from "./components/ConversationHistory";
+import { useChatHistory } from "./components/history/ChatHistoryContext";
 import { useResponseLoading } from "./components/history/ResponseLoadingContext";
-import { generateFirstQuestion } from "../api/question/generateFirstQuestion";
 
 const ConversationLayout: React.FC = () => {
   const { messages, addMessage } = useChatHistory();
@@ -17,10 +16,9 @@ const ConversationLayout: React.FC = () => {
   useEffect(() => {
     // define an async loader
     const loadFirst = async () => {
-      console.log("Load first");
       setIsResponseLoading(true);
       try {
-        const question = await generateFirstQuestion();
+        const question = await generateQuestion([]);
         const botMsg: Message = {
           id: Date.now().toString(),
           type: "bot",
