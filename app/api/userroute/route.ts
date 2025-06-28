@@ -1,15 +1,11 @@
 // app/api/userroute/route.ts
-import { NextResponse } from "next/server";
+import { ai } from "@/lib/ai";
 import {
   GoogleGenAI,
-  createUserContent,
   createPartFromUri,
+  createUserContent,
 } from "@google/genai";
-import { create } from "domain";
-
-const ai = new GoogleGenAI({
-  apiKey: process.env.GOOGLE_API_KEY!,
-});
+import { NextResponse } from "next/server";
 
 export const config = {
   api: { bodyParser: false },

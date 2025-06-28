@@ -6,6 +6,7 @@ import MessageItemContainer from "./MessageItemContainer";
 import MessageItemUserRating from "./MessageItemUserRating";
 import MessageItemUserFeedback from "./MessageItemUserFeedback";
 import { censorWords } from "./censor";
+import HighlightText from "./HighlightText";
 
 interface Props {
   message: Message;
@@ -21,7 +22,9 @@ const MessageItemUser = ({ message }: Props) => {
     <div className="flex w-full justify-end">
       <MessageItemContainer className="rounded-br-none bg-slate-200/50 p-0">
         <div className="p-3 relative">
-          <span>{censorWords(message.text)}</span>
+          <span>
+            <HighlightText text={censorWords(message.text)} />
+          </span>
           <MessageItemUserRating
             message={message}
             isFeedbackVisible={isFeedbackVisible}
