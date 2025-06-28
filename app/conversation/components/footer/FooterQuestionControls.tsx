@@ -11,6 +11,8 @@ import { useChatHistory } from "../history/ChatHistoryContext";
 import type { Message } from "@/app/types/messages";
 import { useResponseLoading } from "../history/ResponseLoadingContext";
 import { generateQuestion } from "@/app/api/question/generateQuestion";
+import { useSummary } from "../history/SummaryContext";
+import { generateSummary } from "@/app/api/summary/generateSummary";
 
 const SAMPLE_QUESTIONS = [
   "What is your greatest strength and how have you applied it?",
@@ -21,7 +23,37 @@ const SAMPLE_QUESTIONS = [
 
 const FooterQuestionControls: React.FC = () => {
   const { messages, addMessage, clearHistory } = useChatHistory();
+  const { summary, setSummary } = useSummary();
   const { setIsResponseLoading } = useResponseLoading();
+
+  const handleFinishInterview = async () => {
+    setIsResponseLoading(true);
+
+    // 1) Generate the summary
+    const summaryText = await generateSummary(messages);
+
+    // 2) Extract all numeric ratings (0–10) from the messages
+    const ratings = messages
+      .map((m) => m.analysis?.chessRating)
+      .filter((r): r is number => typeof r === "number");
+
+    // 3) Compute the average rating (0–10 scale)
+    const avgRating =
+      ratings.length > 0
+        ? ratings.reduce((sum, r) => sum + r, 0) / ratings.length
+        : 0;
+
+    // 4) Convert to a percentage (0–100) and round
+    const accuracy = Math.round(avgRating * 10);
+
+    // 5) Update the summary context
+    setSummary({
+      text: summaryText,
+      accuracy,
+    });
+
+    setIsResponseLoading(false);
+  };
 
   const handleTryAgain = () => {
     // Walk backwards until we hit the last bot message
@@ -59,6 +91,14 @@ const FooterQuestionControls: React.FC = () => {
 
   return (
     <div className="flex items-center w-full h-full gap-4">
+      <Button
+        onClick={handleFinishInterview}
+        className="flex-1"
+        variant={"destructive"}
+      >
+        Finish Interview
+        <OctagonMinus className="ml-2" />
+      </Button>
       <Button
         onClick={handleTryAgain}
         className="flex-1 bg-slate-200"

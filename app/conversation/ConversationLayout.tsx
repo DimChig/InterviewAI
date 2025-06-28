@@ -6,9 +6,11 @@ import ConversationFooter from "./components/ConversationFooter";
 import ConversationHistory from "./components/ConversationHistory";
 import { useChatHistory } from "./components/history/ChatHistoryContext";
 import { useResponseLoading } from "./components/history/ResponseLoadingContext";
+import { useSummary } from "./components/history/SummaryContext";
 
 const ConversationLayout: React.FC = () => {
   const { messages, addMessage } = useChatHistory();
+  const { summary } = useSummary();
   const { setIsResponseLoading } = useResponseLoading();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +44,7 @@ const ConversationLayout: React.FC = () => {
     if (!el) return;
     // instant scroll; swap to behavior: 'smooth' if you like smooth scrolling
     el.scrollTop = el.scrollHeight;
-  }, [messages]);
+  }, [messages, summary]);
 
   return (
     <div className="flex flex-col justify-center w-full h-full max-w-3xl bg-slate-50">

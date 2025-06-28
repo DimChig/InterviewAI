@@ -90,7 +90,7 @@ export async function POST(request: Request) {
     const result = await ai.models.generateContent({
       model: "gemini-2.0-flash",
       contents: createUserContent([
-        `You are a “User Context Builder” whose job is to transform raw user data into a precise, structured context for future prompts. 
+        `You are a "User Context Builder" whose job is to transform raw user data into a precise, structured context for future prompts. 
 
         Please produce a JSON object with the following schema:
         {

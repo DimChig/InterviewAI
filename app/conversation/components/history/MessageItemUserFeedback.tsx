@@ -42,7 +42,7 @@ export default function MessageItemUserFeedback({
               <HighlightText text={censorWords(message.analysis.feedback)} />
             </div>
             <hr className="border-slate-300 my-2" />
-            <h2 className="text-primary/50">Best Response</h2>
+            <h2 className="text-primary/50">Ideal Response Suggestion</h2>
             <div>
               <HighlightText
                 text={censorWords(message.analysis.bestResponse)}
