@@ -3,7 +3,7 @@ var UserResponse = []
 //current question
 var interviewQuestion = []
 //contains the user context
-var UserContext = []
+var UserContext: React.JSX.IntrinsicAttributes | never[] = []
 //conatins the last 3 chats from both ai and user
 var PreviousConversationHistory = []
 
