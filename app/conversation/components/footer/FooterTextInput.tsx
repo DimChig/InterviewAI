@@ -30,10 +30,10 @@ const FooterTextInput = () => {
     setIsResponseLoading(true);
 
     // Call api to update
-    const { feedback, grading, bestResponse } = await generateRating(
-      "Name: Tyler Jakson",
-      [...messages, newMsg]
-    );
+    const { feedback, grading, bestResponse } = await generateRating([
+      ...messages,
+      newMsg,
+    ]);
 
     newMsg.analysis = {
       feedback: feedback,

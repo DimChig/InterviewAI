@@ -1,5 +1,6 @@
 // /lib/generateFeedback.ts
 import type { Message } from "@/app/types/messages";
+import { loadUserContext } from "@/lib/userContextStorage";
 
 export interface FeedbackResult {
   feedback: string;
@@ -12,9 +13,10 @@ export interface FeedbackResult {
  * and returns the parsed feedback object.
  */
 export async function generateRating(
-  userContext: string,
   messages: Message[]
 ): Promise<FeedbackResult> {
+  const userContext = loadUserContext();
+
   const res = await fetch("/api/rating", {
     method: "POST",
     headers: {
