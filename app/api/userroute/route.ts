@@ -104,10 +104,10 @@ export async function POST(request: Request) {
           "age":         "<Age in years>",
           "field":       "<Field of study or profession>",
           "Job Description":{
-            "description of desired job": "<Short tailored description of desired job (3-4 sentences)>",
-            "Specific Skills; ["<skill 1>", "<skill 2>"]
+            "Description of Desired job": "<Short tailored description of desired job (3-4 sentences)>",
+            "Specific Requested Job Skills; ["<skill 1>", "<skill 2>"]
             "Company Name:" ["Company Name"]
-            
+            "Level:" ["junior | senio | intern"]
           }
           "resume": {
             "skills":       ["<skill 1>", "<skill 2>", ...],
