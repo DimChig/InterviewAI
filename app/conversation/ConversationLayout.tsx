@@ -35,11 +35,11 @@ const ConversationLayout: React.FC = () => {
         type: "bot",
         text: "Great! How did you measure success, and what trade-offs did you consider?",
       },
-      {
-        id: "4",
-        type: "user",
-        text: "I set up real-time dashboards with Grafana to track latency and error rates, and agreed on an SLO of p95 < 200ms. The main trade-off was cache invalidation complexity; I wrote a small invalidation service to keep TTLs short for frequently changing data.",
-      },
+      // {
+      //   id: "4",
+      //   type: "user",
+      //   text: "I set up real-time dashboards with Grafana to track latency and error rates, and agreed on an SLO of p95 < 200ms. The main trade-off was cache invalidation complexity; I wrote a small invalidation service to keep TTLs short for frequently changing data.",
+      // },
     ];
 
     initial.forEach((msg) => addMessage(msg));
