@@ -2,6 +2,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Message } from "@/app/types/messages";
+import { censorWords } from "./censor";
 
 interface Props {
   message: Message;
@@ -36,10 +37,10 @@ export default function MessageItemUserFeedback({
           {/* static padding is applied here, not on the animated container */}
           <div className="p-4">
             <h2 className="text-primary/50">Feedback</h2>
-            <p className="mb-4">{message.analysis.feedback}</p>
+            <p className="mb-4">{censorWords(message.analysis.feedback)}</p>
             <hr className="border-slate-300 my-2" />
             <h2 className="text-primary/50">Best Response</h2>
-            <p>&quot;{message.analysis.bestResponse}&quot;</p>
+            <p>&quot;{censorWords(message.analysis.bestResponse)}&quot;</p>
           </div>
         </motion.div>
       )}
