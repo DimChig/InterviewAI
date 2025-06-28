@@ -26,7 +26,7 @@ const ConversationLayout: React.FC = () => {
           type: "bot",
           text: question,
         };
-        addMessage(botMsg);
+        if (messages.length === 0) addMessage(botMsg);
       } catch (err) {
         console.error("Failed to load first question", err);
       } finally {
