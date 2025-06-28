@@ -1,11 +1,7 @@
 // /app/api/generate-question/route.ts
-import { NextResponse } from "next/server";
-import { GoogleGenAI } from "@google/genai";
 import type { Message } from "@/app/types/messages";
-
-const ai = new GoogleGenAI({
-  apiKey: process.env.GOOGLE_API_KEY!,
-});
+import { ai } from "@/lib/ai";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   let body: any;
@@ -66,8 +62,10 @@ You are provided with:
 **UserContext Information:**
 ${userContext}
 
+**Formatting:**
+You are only allowed to use *bold* markup (single stars). You must use this markup for inportant parts of the text. No other markup is allowed.
+
 **Output:**
-Only formatting that is allowed is *bold*
 Return only the text that will be shown in the UI.`,
     },
   });
