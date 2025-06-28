@@ -87,8 +87,6 @@ export async function POST(request: Request) {
       ]),
     });
 
-    console.log(pdfResult.text);
-
     const result = await ai.models.generateContent({
       model: "gemini-2.0-flash",
       contents: createUserContent([

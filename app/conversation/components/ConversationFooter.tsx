@@ -5,6 +5,7 @@ import { useChatHistory } from "./history/ChatHistoryContext";
 import FooterQuestionControls from "./footer/FooterQuestionControls";
 import { useResponseLoading } from "./history/ResponseLoadingContext";
 import { LoaderCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const ConversationFooter: React.FC = () => {
   const { messages } = useChatHistory();
@@ -22,7 +23,14 @@ const ConversationFooter: React.FC = () => {
   const lastMessage = messages[messages.length - 1];
 
   return (
-    <div className="flex w-full h-full items-center justify-between p-4 pt-0 bg-transparent">
+    <div
+      className={cn(
+        "flex w-full h-full items-center justify-between p-4 bg-transparent",
+        {
+          "pt-0": lastMessage.type === "bot",
+        }
+      )}
+    >
       {lastMessage.type === "bot" && <FooterTextInput />}
       {lastMessage.type === "user" && <FooterQuestionControls />}
     </div>

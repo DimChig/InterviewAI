@@ -1,7 +1,12 @@
 "use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, RotateCcw } from "lucide-react";
+import {
+  ChevronRight,
+  OctagonMinus,
+  RotateCcw,
+  StopCircle,
+} from "lucide-react";
 import { useChatHistory } from "../history/ChatHistoryContext";
 import type { Message } from "@/app/types/messages";
 import { useResponseLoading } from "../history/ResponseLoadingContext";
@@ -54,7 +59,11 @@ const FooterQuestionControls: React.FC = () => {
 
   return (
     <div className="flex items-center w-full h-full gap-4">
-      <Button onClick={handleTryAgain} className="flex-1">
+      <Button
+        onClick={handleTryAgain}
+        className="flex-1 bg-slate-200"
+        variant={"secondary"}
+      >
         Try Again
         <RotateCcw className="ml-2" />
       </Button>
