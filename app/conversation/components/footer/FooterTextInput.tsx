@@ -5,9 +5,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowUp } from "lucide-react";
 import type { Message } from "@/app/types/messages";
 import { useChatHistory } from "../history/ChatHistoryContext";
+import { useResponseLoading } from "../history/ResponseLoadingContext";
 
 const FooterTextInput = () => {
   const { addMessage } = useChatHistory();
+  const { isResponseLoading, setIsResponseLoading } = useResponseLoading();
   const [text, setText] = useState("");
 
   const handleSend = () => {
@@ -22,6 +24,13 @@ const FooterTextInput = () => {
 
     addMessage(newMsg);
     setText("");
+
+    // Set a request to analyze
+    setIsResponseLoading(true);
+
+    // Call api to update
+
+    setIsResponseLoading(false);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
