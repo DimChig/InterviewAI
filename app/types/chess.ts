@@ -4,7 +4,6 @@
  * Post‐move chess ratings, now matching your 0–10 icon files.
  */
 export enum ChessRating {
-  Book = 0,
   Blunder = 1,
   Incorrect = 2,
   Mistake = 3,
@@ -19,7 +18,6 @@ export enum ChessRating {
 
 /** Where to find each icon in `/public/images/chess/` */
 export const ChessRatingImagePath: Record<ChessRating, string> = {
-  [ChessRating.Book]: "/images/chess/0_book.png",
   [ChessRating.Blunder]: "/images/chess/1_blunder.png",
   [ChessRating.Incorrect]: "/images/chess/2_incorrect.png",
   [ChessRating.Mistake]: "/images/chess/3_mistake.png",

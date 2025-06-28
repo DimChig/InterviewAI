@@ -38,18 +38,16 @@ export default function MessageItemUserFeedback({
           {/* static padding is applied here, not on the animated container */}
           <div className="p-4">
             <h2 className="text-primary/50">Feedback</h2>
-            <p className="mb-4">
+            <div className="mb-4">
               <HighlightText text={censorWords(message.analysis.feedback)} />
-            </p>
+            </div>
             <hr className="border-slate-300 my-2" />
-            <h2 className="text-primary/50">Best Response</h2>
-            <p>
-              &quot;
+            <h2 className="text-primary/50">Ideal Response Suggestion</h2>
+            <div>
               <HighlightText
                 text={censorWords(message.analysis.bestResponse)}
               />
-              &quot;
-            </p>
+            </div>
           </div>
         </motion.div>
       )}

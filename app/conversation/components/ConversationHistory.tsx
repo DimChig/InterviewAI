@@ -3,6 +3,7 @@ import React from "react";
 import { useChatHistory } from "./history/ChatHistoryContext";
 import MessageItemBot from "./history/MessageItemBot";
 import MessageItemUser from "./history/MessageItemUser";
+import SummaryContainer from "./history/SummaryContainer";
 
 const ConversationHistory = () => {
   const { messages } = useChatHistory();
@@ -16,6 +17,7 @@ const ConversationHistory = () => {
           <MessageItemBot key={message.id} message={message} />
         )
       )}
+      <SummaryContainer />
       <br />
     </div>
   );
