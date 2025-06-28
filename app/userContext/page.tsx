@@ -23,6 +23,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useEffect, useState } from "react";
+import { LoaderCircle } from "lucide-react";
+import { loadUserContext, saveUserContext } from "@/lib/userContextStorage";
 
 // Define Zod schema for validation
 const FormSchema = z.object({
@@ -40,6 +43,13 @@ const FormSchema = z.object({
 type FormValues = z.infer<typeof FormSchema>;
 
 export const Page = () => {
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const [userContext, setUserContext] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUserContext(loadUserContext());
+  }, []);
+
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -52,6 +62,8 @@ export const Page = () => {
   });
 
   async function onSubmit(data: FormValues) {
+    setLoading(true);
+
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("age", String(data.age));
@@ -63,14 +75,24 @@ export const Page = () => {
       method: "POST",
       body: formData, // browser sets Content-Type: multipart/form-data
     });
-    // …handle res.ok / res.json() as before…
+
+    if (res.ok) {
+      const context = await res.json();
+      console.log("saved:");
+      console.log(context.summary);
+      saveUserContext(context.summary);
+    } else {
+      console.error("Failed to save user profile", await res.text());
+    }
+
+    setLoading(false);
   }
 
   return (
-    <div className="p-6 flex justify-center">
+    <div className="p-6 flex gap-12 w-full h-screen items-center justify-center">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Application Form</CardTitle>
+          <CardTitle>Your Profile</CardTitle>
           <CardDescription>Please fill out the details below.</CardDescription>
         </CardHeader>
         <CardContent>
@@ -110,15 +132,27 @@ export const Page = () => {
               <FormField
                 control={form.control}
                 name="resume"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Resume (PDF)</FormLabel>
-                    <FormControl>
-                      <Input type="file" accept="application/pdf" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                render={({ field }) => {
+                  const { onChange, onBlur, name, ref } = field;
+                  return (
+                    <FormItem>
+                      <FormLabel>Resume (PDF)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          accept="application/pdf"
+                          name={name}
+                          ref={ref}
+                          onBlur={onBlur}
+                          onChange={(e) => {
+                            onChange(e.target.files);
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
 
               {/* Job Field */}
@@ -129,7 +163,10 @@ export const Page = () => {
                   <FormItem>
                     <FormLabel>Job Field</FormLabel>
                     <FormControl>
-                      <Input placeholder="Desired field" {...field} />
+                      <Input
+                        placeholder="Software Developer, etc..."
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -142,22 +179,36 @@ export const Page = () => {
                 name="desc"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Job Post Description</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Brief description" {...field} />
+                      <Textarea
+                        className="min-h-48 max-h-96"
+                        placeholder="Copy and paste your job description..."
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <Button type="submit" className="w-full">
-                Submit
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading && <LoaderCircle className="animate-spin" />}
+                {isLoading ? "Submiting..." : "Submit"}
               </Button>
             </form>
           </Form>
         </CardContent>
       </Card>
+      {userContext && (
+        <Card className="max-w-lg max-h-[75%] opacity-20 hover:opacity-100 transition-all">
+          <CardHeader>
+            <CardTitle>Your Profile</CardTitle>
+            <CardDescription>For demonstrational purposes</CardDescription>
+          </CardHeader>
+          <CardContent className="overflow-y-auto">{userContext}</CardContent>
+        </Card>
+      )}
     </div>
   );
 };
