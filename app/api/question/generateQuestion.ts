@@ -1,8 +1,11 @@
 import type { Message } from "@/app/types/messages";
 import { loadUserContext } from "@/lib/userContextStorage";
 
-export async function generateQuestion(history: Message[]): Promise<string> {
-  const userContext = loadUserContext();
+export async function generateQuestion(
+  history: Message[],
+  userKey?: string
+): Promise<string> {
+  const userContext = loadUserContext(userKey);
 
   const res = await fetch("/api/question", {
     method: "POST",

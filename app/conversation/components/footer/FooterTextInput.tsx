@@ -7,10 +7,12 @@ import type { Message } from "@/app/types/messages";
 import { useChatHistory } from "../history/ChatHistoryContext";
 import { useResponseLoading } from "../history/ResponseLoadingContext";
 import { generateRating } from "@/app/api/rating/generateRating";
+import { useSession } from "next-auth/react";
 
 const FooterTextInput = () => {
   const { messages, addMessage } = useChatHistory();
-  const { isResponseLoading, setIsResponseLoading } = useResponseLoading();
+  const { setIsResponseLoading } = useResponseLoading();
+  const { data: authData } = useSession();
   const [text, setText] = useState("");
 
   const handleSend = async () => {
@@ -30,10 +32,10 @@ const FooterTextInput = () => {
     setIsResponseLoading(true);
 
     // Call api to update
-    const { feedback, grading, bestResponse } = await generateRating([
-      ...messages,
-      newMsg,
-    ]);
+    const { feedback, grading, bestResponse } = await generateRating(
+      [...messages, newMsg],
+      authData?.user?.id
+    );
 
     newMsg.analysis = {
       feedback: feedback,

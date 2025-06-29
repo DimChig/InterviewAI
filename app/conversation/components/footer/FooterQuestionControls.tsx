@@ -13,6 +13,7 @@ import { useResponseLoading } from "../history/ResponseLoadingContext";
 import { generateQuestion } from "@/app/api/question/generateQuestion";
 import { useSummary } from "../history/SummaryContext";
 import { generateSummary } from "@/app/api/summary/generateSummary";
+import { useSession } from "next-auth/react";
 
 const SAMPLE_QUESTIONS = [
   "What is your greatest strength and how have you applied it?",
@@ -24,13 +25,14 @@ const SAMPLE_QUESTIONS = [
 const FooterQuestionControls: React.FC = () => {
   const { messages, addMessage, clearHistory } = useChatHistory();
   const { summary, setSummary } = useSummary();
+  const { data: authData } = useSession();
   const { setIsResponseLoading } = useResponseLoading();
 
   const handleFinishInterview = async () => {
     setIsResponseLoading(true);
 
     // 1) Generate the summary
-    const summaryText = await generateSummary(messages);
+    const summaryText = await generateSummary(messages, authData?.user?.id);
 
     // 2) Extract all numeric ratings (0–10) from the messages
     const ratings = messages
@@ -75,7 +77,7 @@ const FooterQuestionControls: React.FC = () => {
   const handleNextQuestion = async () => {
     setIsResponseLoading(true);
     try {
-      const question = await generateQuestion(messages);
+      const question = await generateQuestion(messages, authData?.user?.id);
       const botMsg: Message = {
         id: Date.now().toString(),
         type: "bot",

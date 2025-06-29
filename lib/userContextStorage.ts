@@ -23,7 +23,7 @@ export function saveUserContext(context: string, userKey?: string): void {
 export function loadUserContext(userKey?: string): string | null {
   if (typeof window === "undefined") return null;
   const key = userKey ? `${STORAGE_PREFIX}:${userKey}` : STORAGE_PREFIX;
-
+  console.log(userKey);
   try {
     return window.localStorage.getItem(key);
   } catch {

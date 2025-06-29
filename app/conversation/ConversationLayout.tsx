@@ -7,20 +7,23 @@ import ConversationHistory from "./components/ConversationHistory";
 import { useChatHistory } from "./components/history/ChatHistoryContext";
 import { useResponseLoading } from "./components/history/ResponseLoadingContext";
 import { useSummary } from "./components/history/SummaryContext";
+import { useSession } from "next-auth/react";
 
 const ConversationLayout: React.FC = () => {
   const { messages, addMessage } = useChatHistory();
   const { summary } = useSummary();
   const { setIsResponseLoading } = useResponseLoading();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { data: authData, status: authStatus } = useSession();
 
   // initial fake exchange
   useEffect(() => {
+    if (authStatus !== "authenticated") return;
     // define an async loader
     const loadFirst = async () => {
       setIsResponseLoading(true);
       try {
-        const question = await generateQuestion([]);
+        const question = await generateQuestion([], authData?.user?.id);
         const botMsg: Message = {
           id: Date.now().toString(),
           type: "bot",
@@ -36,7 +39,7 @@ const ConversationLayout: React.FC = () => {
 
     // call it
     loadFirst();
-  }, []);
+  }, [authData, authStatus]);
 
   // scroll-to-bottom on every new message
   useEffect(() => {

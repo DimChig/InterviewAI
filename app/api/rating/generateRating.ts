@@ -13,9 +13,10 @@ export interface FeedbackResult {
  * and returns the parsed feedback object.
  */
 export async function generateRating(
-  messages: Message[]
+  messages: Message[],
+  userKey?: string
 ): Promise<FeedbackResult> {
-  const userContext = loadUserContext();
+  const userContext = loadUserContext(userKey);
 
   const res = await fetch("/api/rating", {
     method: "POST",

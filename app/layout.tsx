@@ -2,6 +2,8 @@ import NavBarMainPage from "@/components/navbar/NavBarMainPage";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SessionProvider } from "next-auth/react";
+import MySessionProvider from "./MySessionProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,12 +30,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex flex-col w-full h-screen min-h-screen">
-          <NavBarMainPage />
-          <main className="flex-1 flex flex-col items-center w-full p-0 bg-slate-100">
-            {children}
-          </main>
-        </div>
+        <MySessionProvider>
+          <div className="flex flex-col w-full h-screen min-h-screen">
+            <NavBarMainPage />
+            <main className="flex-1 flex flex-col items-center w-full p-0 bg-slate-100">
+              {children}
+            </main>
+          </div>
+        </MySessionProvider>
       </body>
     </html>
   );

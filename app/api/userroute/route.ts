@@ -1,10 +1,6 @@
 // app/api/userroute/route.ts
 import { ai } from "@/lib/ai";
-import {
-  GoogleGenAI,
-  createPartFromUri,
-  createUserContent,
-} from "@google/genai";
+import { createPartFromUri, createUserContent } from "@google/genai";
 import { NextResponse } from "next/server";
 
 export const config = {

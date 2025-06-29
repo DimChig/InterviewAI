@@ -25,6 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { loadUserContext, saveUserContext } from "@/lib/userContextStorage";
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 // Define Zod schema for validation
 const FormSchema = z.object({
@@ -44,10 +45,12 @@ type FormValues = z.infer<typeof FormSchema>;
 export const UserContextForm = () => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [userContext, setUserContext] = useState<string | null>(null);
+  const { data: authData } = useSession();
 
   useEffect(() => {
-    setUserContext(loadUserContext());
-  }, []);
+    console.log(authData?.user?.id);
+    setUserContext(loadUserContext(authData?.user?.id));
+  }, [authData]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -78,8 +81,7 @@ export const UserContextForm = () => {
     if (res.ok) {
       const context = await res.json();
       console.log("saved:");
-      console.log(context.summary);
-      saveUserContext(context.summary);
+      saveUserContext(context.summary, authData?.user?.id);
     } else {
       console.error("Failed to save user profile", await res.text());
     }
@@ -88,8 +90,8 @@ export const UserContextForm = () => {
   }
 
   return (
-    <div className="p-6 flex gap-12 w-full h-full items-center justify-center">
-      <Card className="w-full max-w-md">
+    <div className="p-6 flex gap-12 w-full h-full justify-center">
+      <Card className="w-full max-w-md h-fit">
         <CardHeader>
           <CardTitle>Your Profile</CardTitle>
           <CardDescription>Please fill out the details below.</CardDescription>
@@ -181,7 +183,7 @@ export const UserContextForm = () => {
                     <FormLabel>Job Post Description</FormLabel>
                     <FormControl>
                       <Textarea
-                        className="min-h-48 max-h-96"
+                        className="min-h-48 max-h-48"
                         placeholder="Copy and paste your job description..."
                         {...field}
                       />
@@ -200,7 +202,7 @@ export const UserContextForm = () => {
         </CardContent>
       </Card>
       {userContext && (
-        <Card className="max-w-lg max-h-[79%] opacity-20 hover:opacity-100 transition-all">
+        <Card className="max-w-lg max-h-[83%] opacity-20 hover:opacity-100 transition-all">
           <CardHeader>
             <CardTitle>Your Profile</CardTitle>
             <CardDescription>For demonstrational purposes</CardDescription>
