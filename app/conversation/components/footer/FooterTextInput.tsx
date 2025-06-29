@@ -5,13 +5,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowUp } from "lucide-react";
 import type { Message } from "@/app/types/messages";
 import { useChatHistory } from "../history/ChatHistoryContext";
-import { useResponseLoading } from "../history/ResponseLoadingContext";
+import {
+  LoadingState,
+  useResponseLoading,
+} from "../history/ResponseLoadingContext";
 import { generateRating } from "@/app/api/rating/generateRating";
 import { useSession } from "next-auth/react";
 
 const FooterTextInput = () => {
   const { messages, addMessage } = useChatHistory();
-  const { setIsResponseLoading } = useResponseLoading();
+  const { setLoadingState } = useResponseLoading();
   const { data: authData } = useSession();
   const [text, setText] = useState("");
 
@@ -29,7 +32,7 @@ const FooterTextInput = () => {
     setText("");
 
     // Set a request to analyze
-    setIsResponseLoading(true);
+    setLoadingState(LoadingState.Default);
 
     // Call api to update
     const { feedback, grading, bestResponse } = await generateRating(
@@ -43,7 +46,7 @@ const FooterTextInput = () => {
       bestResponse: bestResponse,
     };
 
-    setIsResponseLoading(false);
+    setLoadingState(null);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {

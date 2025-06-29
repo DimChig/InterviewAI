@@ -9,7 +9,10 @@ import {
 } from "lucide-react";
 import { useChatHistory } from "../history/ChatHistoryContext";
 import type { Message } from "@/app/types/messages";
-import { useResponseLoading } from "../history/ResponseLoadingContext";
+import {
+  LoadingState,
+  useResponseLoading,
+} from "../history/ResponseLoadingContext";
 import { generateQuestion } from "@/app/api/question/generateQuestion";
 import { useSummary } from "../history/SummaryContext";
 import { generateSummary } from "@/app/api/summary/generateSummary";
@@ -24,12 +27,12 @@ const SAMPLE_QUESTIONS = [
 
 const FooterQuestionControls: React.FC = () => {
   const { messages, addMessage, clearHistory } = useChatHistory();
-  const { summary, setSummary } = useSummary();
+  const { setSummary } = useSummary();
   const { data: authData } = useSession();
-  const { setIsResponseLoading } = useResponseLoading();
+  const { setLoadingState } = useResponseLoading();
 
   const handleFinishInterview = async () => {
-    setIsResponseLoading(true);
+    setLoadingState(LoadingState.Default);
 
     // 1) Generate the summary
     const summaryText = await generateSummary(messages, authData?.user?.id);
@@ -54,7 +57,7 @@ const FooterQuestionControls: React.FC = () => {
       accuracy,
     });
 
-    setIsResponseLoading(false);
+    setLoadingState(null);
   };
 
   const handleTryAgain = () => {
@@ -75,7 +78,7 @@ const FooterQuestionControls: React.FC = () => {
   };
 
   const handleNextQuestion = async () => {
-    setIsResponseLoading(true);
+    setLoadingState(LoadingState.BotMessage);
     try {
       const question = await generateQuestion(messages, authData?.user?.id);
       const botMsg: Message = {
@@ -87,7 +90,7 @@ const FooterQuestionControls: React.FC = () => {
     } catch (err) {
       console.error("Failed to load first question", err);
     } finally {
-      setIsResponseLoading(false);
+      setLoadingState(null);
     }
   };
 

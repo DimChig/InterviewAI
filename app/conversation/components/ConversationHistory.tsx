@@ -4,6 +4,7 @@ import { useChatHistory } from "./history/ChatHistoryContext";
 import MessageItemBot from "./history/MessageItemBot";
 import MessageItemUser from "./history/MessageItemUser";
 import SummaryContainer from "./history/SummaryContainer";
+import LoadingBotMessageSkeleton from "./history/LoadingBotMessageSkeleton";
 
 const ConversationHistory = () => {
   const { messages } = useChatHistory();
@@ -18,6 +19,7 @@ const ConversationHistory = () => {
         )
       )}
       <SummaryContainer />
+      <LoadingBotMessageSkeleton />
       <br />
     </div>
   );

@@ -5,14 +5,17 @@ import type { Message } from "../types/messages";
 import ConversationFooter from "./components/ConversationFooter";
 import ConversationHistory from "./components/ConversationHistory";
 import { useChatHistory } from "./components/history/ChatHistoryContext";
-import { useResponseLoading } from "./components/history/ResponseLoadingContext";
+import {
+  LoadingState,
+  useResponseLoading,
+} from "./components/history/ResponseLoadingContext";
 import { useSummary } from "./components/history/SummaryContext";
 import { useSession } from "next-auth/react";
 
 const ConversationLayout: React.FC = () => {
   const { messages, addMessage } = useChatHistory();
   const { summary } = useSummary();
-  const { setIsResponseLoading } = useResponseLoading();
+  const { setLoadingState } = useResponseLoading();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { data: authData, status: authStatus } = useSession();
 
@@ -21,7 +24,7 @@ const ConversationLayout: React.FC = () => {
     if (authStatus !== "authenticated") return;
     // define an async loader
     const loadFirst = async () => {
-      setIsResponseLoading(true);
+      setLoadingState(LoadingState.BotMessage);
       try {
         const question = await generateQuestion([], authData?.user?.id);
         const botMsg: Message = {
@@ -33,7 +36,7 @@ const ConversationLayout: React.FC = () => {
       } catch (err) {
         console.error("Failed to load first question", err);
       } finally {
-        setIsResponseLoading(false);
+        setLoadingState(null);
       }
     };
 

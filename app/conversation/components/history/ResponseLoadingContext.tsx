@@ -2,11 +2,17 @@
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
+/** Two possible loading states */
+export enum LoadingState {
+  Default = "Default",
+  BotMessage = "BotMessage",
+}
+
 interface ResponseLoadingContextValue {
-  /** Whether a response is currently loading */
-  isResponseLoading: boolean;
-  /** Setter to toggle loading state */
-  setIsResponseLoading: (loading: boolean) => void;
+  /** Current loading state, or null if not loading */
+  loadingState: LoadingState | null;
+  /** Setter to change (or clear) loading state */
+  setLoadingState: (state: LoadingState | null) => void;
 }
 
 const ResponseLoadingContext = createContext<
@@ -16,19 +22,17 @@ const ResponseLoadingContext = createContext<
 export const ResponseLoadingProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [isResponseLoading, setIsResponseLoading] = useState(false);
+  const [loadingState, setLoadingState] = useState<LoadingState | null>(null);
 
   return (
-    <ResponseLoadingContext.Provider
-      value={{ isResponseLoading, setIsResponseLoading }}
-    >
+    <ResponseLoadingContext.Provider value={{ loadingState, setLoadingState }}>
       {children}
     </ResponseLoadingContext.Provider>
   );
 };
 
 /**
- * Hook to access the loading indicator context.
+ * Hook to access the loading state context.
  * Must be used under <ResponseLoadingProvider>.
  */
 export function useResponseLoading(): ResponseLoadingContextValue {
