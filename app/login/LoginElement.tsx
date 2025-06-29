@@ -1,5 +1,6 @@
 "use client";
 
+import ImageLogo from "@/components/navbar/ImageLogo";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,8 +10,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { signIn } from "next-auth/react";
 import imageGoogle from "@/public/images/google.webp";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 
 export default function LoginForm({
@@ -21,9 +22,12 @@ export default function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="w-xs">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
+          <div className="flex w-full items-center justify-center">
+            <ImageLogo width={64} height={64} />
+          </div>
+          <CardTitle className="text-2xl w-full text-center">Login</CardTitle>
+          <CardDescription className="w-full text-center">
+            Sign in to practice interviews
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -33,7 +37,7 @@ export default function LoginForm({
                 type="button"
                 variant="outline"
                 className="w-full text-base"
-                onClick={() => signIn("google", { callbackUrl: "/" })}
+                onClick={() => signIn("google", { callbackUrl: "/profile" })}
               >
                 <Image src={imageGoogle} alt="google" width={20} height={20} />
                 Signin with Google

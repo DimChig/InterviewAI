@@ -16,7 +16,7 @@ const NavBarMainPageMenu = () => {
   const menuItems: MenuItem[] = [
     { label: "Home", href: "/", isDefault: true },
     { label: "Mock Interview", href: "/conversation" },
-    { label: "Profile", href: "/userContext" },
+    { label: "Profile", href: "/profile" },
   ];
 
   return (
