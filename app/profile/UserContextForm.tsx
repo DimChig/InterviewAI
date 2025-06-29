@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -48,7 +49,6 @@ export const UserContextForm = () => {
   const { data: authData } = useSession();
 
   useEffect(() => {
-    console.log(authData?.user?.id);
     setUserContext(loadUserContext(authData?.user?.id));
   }, [authData]);
 
@@ -80,8 +80,8 @@ export const UserContextForm = () => {
 
     if (res.ok) {
       const context = await res.json();
-      console.log("saved:");
       saveUserContext(context.summary, authData?.user?.id);
+      toast.success("User information updated!");
     } else {
       console.error("Failed to save user profile", await res.text());
     }
@@ -201,7 +201,7 @@ export const UserContextForm = () => {
           </Form>
         </CardContent>
       </Card>
-      {userContext && (
+      {/* {userContext && (
         <Card className="max-w-lg max-h-[83%] opacity-20 hover:opacity-100 transition-all">
           <CardHeader>
             <CardTitle>Your Profile</CardTitle>
@@ -209,7 +209,7 @@ export const UserContextForm = () => {
           </CardHeader>
           <CardContent className="overflow-y-auto">{userContext}</CardContent>
         </Card>
-      )}
+      )} */}
     </div>
   );
 };

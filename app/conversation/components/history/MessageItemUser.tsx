@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Message } from "@/app/types/messages";
-import MessageItemContainer from "./MessageItemContainer";
-import MessageItemUserRating from "./MessageItemUserRating";
-import MessageItemUserFeedback from "./MessageItemUserFeedback";
+import { useState } from "react";
 import { censorWords } from "./censor";
 import HighlightText from "./HighlightText";
+import MessageItemContainer from "./MessageItemContainer";
+import MessageItemUserFeedback from "./MessageItemUserFeedback";
+import MessageItemUserRating from "./MessageItemUserRating";
 
 interface Props {
   message: Message;

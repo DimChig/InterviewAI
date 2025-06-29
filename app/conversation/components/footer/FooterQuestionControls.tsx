@@ -1,29 +1,17 @@
 "use client";
-import React from "react";
-import { Button } from "@/components/ui/button";
-import {
-  ChevronRight,
-  OctagonMinus,
-  RotateCcw,
-  StopCircle,
-} from "lucide-react";
-import { useChatHistory } from "../history/ChatHistoryContext";
+import { generateQuestion } from "@/app/api/question/generateQuestion";
+import { generateSummary } from "@/app/api/summary/generateSummary";
 import type { Message } from "@/app/types/messages";
+import { Button } from "@/components/ui/button";
+import { ChevronRight, OctagonMinus, RotateCcw } from "lucide-react";
+import { useSession } from "next-auth/react";
+import React from "react";
+import { useChatHistory } from "../history/ChatHistoryContext";
 import {
   LoadingState,
   useResponseLoading,
 } from "../history/ResponseLoadingContext";
-import { generateQuestion } from "@/app/api/question/generateQuestion";
 import { useSummary } from "../history/SummaryContext";
-import { generateSummary } from "@/app/api/summary/generateSummary";
-import { useSession } from "next-auth/react";
-
-const SAMPLE_QUESTIONS = [
-  "What is your greatest strength and how have you applied it?",
-  "Describe a time you faced a conflict at work and how you resolved it.",
-  "How do you prioritize your tasks when everything feels urgent?",
-  "Tell me about a time you had to learn something quickly on the job.",
-];
 
 const FooterQuestionControls: React.FC = () => {
   const { messages, addMessage, clearHistory } = useChatHistory();

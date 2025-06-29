@@ -23,3 +23,5 @@ export default ConversationPage;
 export const metadata: Metadata = {
   title: "Chat - Echo Interview",
 };
+
+export const dynamic = "force-dynamic";

@@ -1,4 +1,5 @@
 "use client";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useRef } from "react";
 import { generateQuestion } from "../api/question/generateQuestion";
 import type { Message } from "../types/messages";
@@ -10,7 +11,6 @@ import {
   useResponseLoading,
 } from "./components/history/ResponseLoadingContext";
 import { useSummary } from "./components/history/SummaryContext";
-import { useSession } from "next-auth/react";
 
 const ConversationLayout: React.FC = () => {
   const { messages, addMessage } = useChatHistory();
