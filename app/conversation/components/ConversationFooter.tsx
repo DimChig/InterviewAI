@@ -6,16 +6,13 @@ import React from "react";
 import FooterQuestionControls from "./footer/FooterQuestionControls";
 import FooterTextInput from "./footer/FooterTextInput";
 import { useChatHistory } from "./history/ChatHistoryContext";
-import {
-  LoadingState,
-  useResponseLoading,
-} from "./history/ResponseLoadingContext";
+import { useResponseLoading } from "./history/ResponseLoadingContext";
 import { useSummary } from "./history/SummaryContext";
 
 const ConversationFooter: React.FC = () => {
   const { messages } = useChatHistory();
   const { loadingState } = useResponseLoading();
-  const { summary, setSummary } = useSummary();
+  const { summary } = useSummary();
   if (loadingState !== null) {
     return (
       <div className="flex w-full h-full items-center justify-center p-4 gap-2 text-primary/75">
@@ -28,8 +25,7 @@ const ConversationFooter: React.FC = () => {
   if (summary) {
     return (
       <div className="flex w-full h-full items-center justify-center p-4 gap-2 text-primary/75">
-        {/* <Button className="w-full" onClick={() => window.location.reload()}> */}
-        <Button className="w-full" onClick={() => setSummary(null)}>
+        <Button className="w-full" onClick={() => window.location.reload()}>
           Start Over
           <RotateCcw className="ml-2" />
         </Button>

@@ -81,6 +81,9 @@ export async function POST(request: Request) {
         }
       `,
       ]),
+      config: {
+        temperature: 0,
+      },
     });
 
     const result = await ai.models.generateContent({
@@ -117,6 +120,9 @@ export async function POST(request: Request) {
         Resume Transcript: ${pdfResult.text}
         `,
       ]),
+      config: {
+        temperature: 0,
+      },
     });
 
     return NextResponse.json({ summary: result.text });

@@ -21,7 +21,7 @@ const SummaryContainer = () => {
         <HighlightText text={censorWords(summary.text)} />
       </div>
       <div className="flex gap-2">
-        <span className="text-primary/50">Average Accuracy:</span>
+        <span className="text-primary/50">Interview Score:</span>
         <span className="font-semibold">{summary.accuracy}%</span>
       </div>
     </motion.div>

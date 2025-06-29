@@ -43,6 +43,7 @@ export async function POST(req: Request) {
     model: "gemini-2.5-flash",
     history: chatHistory,
     config: {
+      temperature: 0,
       systemInstruction: `You are an AI interviewer in a technical interview setting.
 You are provided with:
 
